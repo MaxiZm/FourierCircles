@@ -38,6 +38,7 @@ function double_points(points) {
 
 }
 
+// Handle mouse events
 canvas.addEventListener('mousedown', (event) => {
     user_points = [];
 });
@@ -46,15 +47,31 @@ canvas.addEventListener('mousemove', (event) => {
         user_points.push([event.clientX - width/2, event.clientY - height/2]);
     }
 });
-
 canvas.addEventListener('mouseup', (event) => {
+    processUserPoints();
+});
+
+// Handle touch events
+canvas.addEventListener('touchstart', (event) => {
+    user_points = [];
+    event.preventDefault(); // Prevent scrolling or other touch behavior
+});
+canvas.addEventListener('touchmove', (event) => {
+    let touch = event.touches[0];
+    user_points.push([touch.clientX - width/2, touch.clientY - height/2]);
+    event.preventDefault(); // Prevent scrolling or other touch behavior
+});
+canvas.addEventListener('touchend', (event) => {
+    processUserPoints();
+});
+
+function processUserPoints() {
     circles = [];
     points = [];
 
     while (user_points.length < 1000) {
         user_points = double_points(user_points);
     }
-
 
     let parent = null;
 
@@ -65,18 +82,19 @@ canvas.addEventListener('mouseup', (event) => {
         const coefficient = fourier(user_points, user_points.length, i);
         const radius = math.abs(coefficient);
         const phase = math.arg(coefficient);
-        const tps = i;  // This could be adjusted based on your specific needs
+        const tps = i;
 
         const circle = new Circle(radius, phase, parent, tps);
         circles.push(circle);
-        console.log(radius, phase, tps)
-        parent = circle;  // Set this circle as the parent for the next one
+        console.log(radius, phase, tps);
+        parent = circle;
         if (i > 0) i *= -1;
         else i = (i * (-1)) + 1;
     }
 
     user_points = [];
-});
+}
+
 
 function drawCircles() {
     ctx.fillStyle = 'black';
