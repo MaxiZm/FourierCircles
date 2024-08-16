@@ -74,6 +74,8 @@ canvas.addEventListener('mouseup', (event) => {
         if (i > 0) i *= -1;
         else i = (i * (-1)) + 1;
     }
+
+    user_points = [];
 });
 
 function drawCircles() {
