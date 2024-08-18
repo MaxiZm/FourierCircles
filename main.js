@@ -27,6 +27,9 @@ let circles = [];
 let user_points = [];
 
 
+document.getElementById('text').value = 5;
+
+
 function double_points(points) {
     let double_points = [];
     for (let i = 0; i < points.length - 1; i++) {
@@ -91,6 +94,8 @@ function processUserPoints() {
         if (i > 0) i *= -1;
         else i = (i * (-1)) + 1;
     }
+
+    circles.sort((a, b) => b.radius - a.radius);
 
     user_points = [];
 }
